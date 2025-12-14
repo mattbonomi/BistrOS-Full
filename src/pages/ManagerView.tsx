@@ -16,14 +16,8 @@ export default function ManagerView() {
 
   useEffect(() => {
     load()
-
-    const channel = subscribeManager((payload) => {
-      load()
-    })
-
-    return () => {
-      supabase.removeChannel(channel)
-    }
+    const channel = subscribeManager(() => load())
+    return () => supabase.removeChannel(channel)
   }, [])
 
   async function advance(order: any) {
@@ -35,6 +29,23 @@ export default function ManagerView() {
         : 'delivered'
 
     await setOrderState(order.id, next)
+  }
+
+  if (loading) return <Loader />
+
+  return (
+    <div>
+      <h2>Manager</h2>
+
+      {orders.map((o) => (
+        <div key={o.id} style={{ marginBottom: 20 }}>
+          <OrderCard order={o} />
+          <button onClick={() => advance(o)}>Avanzar estado</button>
+        </div>
+      ))}
+    </div>
+  )
+}    await setOrderState(order.id, next)
   }
 
   if (loading) return <Loader />
