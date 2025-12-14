@@ -1,7 +1,7 @@
 export type Table = {
   id: string
-  status: string
-  cart: any
+  status: string | null
+  cart: any[] | null
   waiter_requested: boolean
   bill_requested: boolean
 }
@@ -9,7 +9,8 @@ export type Table = {
 export type Order = {
   id: string
   table_id: string
-  items: any
+  items: { name: string; price: number }[]
   state: string
   total: number
+  created_at?: string
 }
